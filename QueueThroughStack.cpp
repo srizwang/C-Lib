@@ -1,46 +1,49 @@
 #include <iostream>
-#include <queue>
+#include <stack>
 #include <stdlib.h>
 #include <stdio.h>
 using namespace std;
 
 // Code by Rizwan
 
-// Stack with queues (int in this case).
+// Queue with stacks (int in this case).
 
-// Implementing stack operations, namely push and pop with 2 queues. push is simply pushing the content into the queue.
-// For pop, we use a temporary queue to store the values dequeued from the original queue. We dequeue all the elements from the original
-// queue except the last one, and enqueue them in the temp queue. The one element left in the original queue is our answer. Once we save it in
-// a variable, we then equate our original queue with our temp queue.
+// Implementing Queue operations, namely enqueue and dequeue with 2 stacks. Enqueuing is simply pushing the content into the stack.
+// For dequeuing, we use a temporary stack to store the values popped off the original stack. This way, the bottom most element in the original
+// stack is now the top most element in the temp stack. A simple pop operation on the temp stack results in dequeue. 
+// Contents of the temp stack are then placed back into the original stack.
 
 
 
-// Queue passed by reference
-int pop(queue <int> &q){
+// Stack passed by reference
+int dequeue(stack <int> &s){
 	
-	// Corner case, i.e. if the queue is empty.
-	if(q.empty()){
-		cout<<"Queue is empty"<<endl;
+	// Corner case, i.e. if the stack is empty.
+	if(s.empty()){
+		cout<<"Stack is empty"<<endl;
 		exit(1);
 	}
 
-	// Temporary queue to store content that is dequeued off the original queue.
-	queue <int> temp;
+	// Temporary stack to store content that is popped off the original stack.
+	stack <int> temp;
 
-	// Adding values to the temporary queue, except the last one. The last value will be our answer.
-	while(q.size()!=1){
-		temp.push(q.front());
-		q.pop();
+	// Adding values to the temporary stack.
+	while(!s.empty()){
+		temp.push(s.top());
+		s.pop();
 
 	}
 
+	// Getting top of the temp stack (to implement FIFO for original stack), and popping the value off.
+	int top=temp.top();
+	temp.pop();
+	
 
-	// Getting the last value off the original queue, as it was the last value inserted in the queue. This will satisfy LIFO property.
-	int top=q.front();
-	q.pop();
-
-	// Equating our original queue with the temp queue, after dequeuing the last element as the stack top.
-	q=temp;	
+	// Putting the content back in the original stack.
+	while(!temp.empty()){
+		s.push(temp.top());
+		temp.pop();
+	}
 
 
 	// Returns top.
@@ -53,20 +56,20 @@ int pop(queue <int> &q){
 
 int main(){
 	
-	queue <int> myQueue;
-	int stackTop;
+	stack <int> myStack;
+	int queueLead;
 
-	myQueue.push(10);
-	myQueue.push(5);
-	myQueue.push(15);
-	myQueue.push(1);
+	myStack.push(10);
+	myStack.push(5);
+	myStack.push(15);
+	myStack.push(1);
 
 
-	stackTop=pop (myQueue);
-	cout<<"Stack top = "<<stackTop<<endl;
+	queueLead=dequeue (myStack);
+	cout<<"Queue lead = "<<queueLead<<endl;
 
-	stackTop=pop (myQueue);
-	cout<<"Stack top = "<<stackTop<<endl;
+	queueLead=dequeue (myStack);
+	cout<<"Queue lead = "<<queueLead<<endl;
 
 
 	return 0;
