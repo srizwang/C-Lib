@@ -4,7 +4,7 @@
 #include <stdio.h>
 using namespace std;
 
-// Code by Rizwan
+// Code by Rizwan Gilani
 
 // Queue with stacks (int in this case).
 
